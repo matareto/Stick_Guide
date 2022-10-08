@@ -5,6 +5,7 @@
 #define led 2
 
 void setup() {
+  Serial.begin(9600);
   pinMode(trig,OUTPUT);
   pinMode(echo,INPUT);
   pinMode(led,OUTPUT);
