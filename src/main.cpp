@@ -1,9 +1,18 @@
 #include <Arduino.h>
 
+#define trig 14
+#define echo 27
+#define led 2
+
 void setup() {
-  // put your setup code here, to run once:
+  pinMode(trig,OUTPUT);
+  pinMode(echo,INPUT);
+  pinMode(led,OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  digitalWrite(led,HIGH);
+  delay(1000);
+  digitalWrite(led,LOW);
+  delay(1000);
 }
