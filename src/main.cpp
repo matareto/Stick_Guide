@@ -1,9 +1,48 @@
 #include <Arduino.h>
 // Librerias requeridas
-#include "WiFi.h"
 #include "ESPAsyncWebServer.h"
 #include <AsyncTCP.h>
 #include "SPIFFS.h"
+#if defined(ESP32)
+#include <WiFi.h>
+#include <FirebaseESP32.h>
+#elif defined(ESP8266)
+#include <ESP8266WiFi.h>
+#include <FirebaseESP8266.h>
+#endif
+
+//////////////////////////////Conexxión el a base de datos y la ESP32
+
+// Se proporciona l ainformación de la impresión de carga RTDB
+#include <addons/RTDBHelper.h>
+
+//Credenciales dela red WiFi
+#define WIFI_SSID "Daniel Amado"
+#define WIFI_PASSWORD "Windir1184*"
+
+/* Link de la Base de datos */
+#define DATABASE_URL "bastonguia-d271d-default-rtdb.firebaseio.com"
+#define DATABASE_SECRET "rfT9VhXd6Fxj0E4AEnKOEEGkcYZGQaHXCyZjyLvl"
+
+/* Se define el objeto de la base de datos */
+FirebaseData ultrasonico;
+
+/* Se define la auteticación en Firebase */
+FirebaseAuth auth;
+
+/* Se define la configuración de Firebase */
+FirebaseConfig config;
+
+String ruta = "StickGuide";
+
+unsigned long dataMillis = 0;
+int count = 0;
+
+
+//Se crea el servidor en el puerto 80
+AsyncWebServer server(80);
+
+///////////////////////////////////Variables
 
 #define trig 14
 #define echo 27
@@ -13,15 +52,7 @@
 int distancia = 0;
 int estado;
 
-String d;
-// Replace with your network credentials
-const char *ssid = "Daniel Amado";
-const char *password = "Windir1184*";
-
-
-// Create AsyncWebServer object on port 80
-AsyncWebServer server(80);
-
+////////////////////////////////////Funcion del sensor ultrasónico
 
 long distanciaUltrasonico(int gat, int eco){
   pinMode(gat, OUTPUT);
@@ -35,6 +66,9 @@ long distanciaUltrasonico(int gat, int eco){
 
   return pulseIn(eco, HIGH);
 }
+
+//////////////////////////////Configuración del programa, puertos y enlace
+
 void setup()
 {
   Serial.begin(115200);
@@ -44,16 +78,28 @@ void setup()
     Serial.println("An Error has occurred while mounting SPIFFS");
     return;
   }
-  // Connect to Wi-Fi
-  WiFi.begin(ssid, password);
+  // Conectado al WiFi
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED)
   {
     delay(1000);
     Serial.println("Conectado al WiFi..");
   }
 
-  // Print ESP32 Local IP Address
+  // Muestra la IP local de la ESP32
   Serial.println(WiFi.localIP());
+
+  //Muestra la versión del FireBase
+  Serial.printf("Firebase Client v%s\n\n", FIREBASE_CLIENT_VERSION);
+
+  /* Se asigna la base de datos y los secretos de la misma */
+  config.database_url = DATABASE_URL;
+  config.signer.tokens.legacy_token = DATABASE_SECRET;
+
+
+  /* Inicializa la librería con la autenticación y config de Firebase */
+  Firebase.begin(DATABASE_URL, DATABASE_SECRET);
+  Firebase.reconnectWiFi(true);
 
   // Route for root / web page
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request)
@@ -62,7 +108,8 @@ void setup()
   // Route to load style.css file
   server.on("/estilos.css", HTTP_GET, [](AsyncWebServerRequest *request)
             { request->send(SPIFFS, "/estilos.css", "text/css"); });
-
+  server.on("/data/main.js", HTTP_GET, [](AsyncWebServerRequest *request)
+            { request->send(SPIFFS, "/data/main.js"); });
 
   // Start server
   server.begin();
@@ -71,8 +118,16 @@ void setup()
   pinMode(luz, INPUT_PULLDOWN);
 }
 
+/////////////////////// Programa principal
+
 void loop()
 {
+
+  if (millis() - dataMillis > 5000)
+  {
+    dataMillis = millis();
+    Serial.printf("Set int... %s\n", Firebase.setInt(ultrasonico, "/test/int", count++) ? "ok" : ultrasonico.errorReason().c_str());
+  }
 
   distancia = 0.032/2 * distanciaUltrasonico(trig,echo);
 
@@ -105,4 +160,6 @@ void loop()
     digitalWrite(buzzer,LOW);
   }
 
+  Firebase.setInt(ultrasonico, ruta + "/Distancia ", distancia);
+  Firebase.setInt(ultrasonico, ruta + "/Día-Noche ", estado);
 }
