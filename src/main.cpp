@@ -108,8 +108,8 @@ void setup()
   // Route to load style.css file
   server.on("/estilos.css", HTTP_GET, [](AsyncWebServerRequest *request)
             { request->send(SPIFFS, "/estilos.css", "text/css"); });
-  server.on("/data/main.js", HTTP_GET, [](AsyncWebServerRequest *request)
-            { request->send(SPIFFS, "/data/main.js"); });
+  server.on("/main.js", HTTP_GET, [](AsyncWebServerRequest *request)
+            { request->send(SPIFFS, "/main.js"); });
 
   // Start server
   server.begin();

@@ -1,8 +1,94 @@
-*
-{
-    background-color: black;
-    color: white;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    justify-content: center;
-    text-align: center;
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma-rtl.min.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
+
+:root{
+    --colorNav: #001233;
+    --colorhover:#ccefa9;
+    --colora:#a9efef;
+    --colorbg: #A9EFEF;
+    --colorLetra: #103356;
+    --content: #efcca9;
 }
+
+/*************** header ***************/
+
+.navbar{
+    justify-content: center;
+    background-color: var(--colorNav);
+    height: 8vh;
+}
+
+.navbar-item{
+    font-family: 'Righteous', cursive;
+    font-size: 2em;
+    color: var(--colora);
+    transition: .5s ease-in-out all;
+}
+
+.navbar-item:hover{
+    color: var(--colorhover) !important;
+}
+
+/************************** Contenido **************************/
+
+.main-content{
+    height: 92vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--colorbg);
+}
+
+.contenido{
+    width: 60%;
+    padding: 2rem 3rem;
+    justify-content: center;
+    overflow: auto;
+    background-color: var(--content);
+    border-radius: 2rem;
+    box-shadow: 0 0 1rem 0 rgba(41, 127, 214, 0.6);
+}
+
+.titulo{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem 1rem 2rem;
+    border-bottom: 3px solid;
+}
+
+.titulo h1{
+    font-family: 'Holtwood One SC', serif;
+    font-size: 20px;
+    color: var(--colorLetra);
+}
+
+.titulo button{
+    font-family: 'Holtwood One SC', serif;
+    color: var(--colorhover) !important;
+    background-color: var(--colorLetra) !important;
+    transition: .4s ease-in all !important;
+}
+
+.button span{
+    font-size: 11px;
+    margin-left: 10px;
+}
+
+.titulo button:hover{
+    background-color: var(--colorNav) !important;
+}
+
+.sensores{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.sensores table{
+    border-radius: 15px;
+    box-shadow: 2px 2px 10px 1px var(--colorLetra);
+}
+

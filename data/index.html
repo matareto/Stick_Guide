@@ -1,17 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
+    <script src="https://kit.fontawesome.com/2b22fe38ec.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos.css">
-    <title>Document</title>
+    <html style='overflow-y:hidden'>
+                            <!--Firestore-->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <title>Stick Guide</title>
 </head>
 <body>
-        <h1 class = "titulo_prp">stick Guide</h1>
 
-    <div>
-        <p class="dist">Distancia: </p>
-    </div>
+    <header>
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="index.html">
+                    Stick Guide
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <article class="contenido">
+            <section class="titulo">
+                <h1>Lectura de sensores</h1>
+                <button class="button is-info">
+                    <i class="far fa-laugh-squint"></i>
+                    <span>Iniciar</span>
+                </button>
+            </section>
+
+            <section class="sensores">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Sensor utilizado</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>Sensor ultrasónico</th>
+                            <td id="sonic">984</td>
+                        </tr>
+                        <tr>
+                            <th>LDR</th>
+                            <td id="light">52</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </article>
+    </main>
+    
+    <script src="main.js"></script>
 </body>
 </html>
