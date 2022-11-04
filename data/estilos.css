@@ -2,14 +2,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
 :root{
     --colorNav: #001233;
     --colorhover:#ccefa9;
     --colora:#a9efef;
     --colorbg: #A9EFEF;
-    --colorLetra: #103356;
-    --content: #efcca9;
+    --colorLetra: #006B60;
+    --content: #004F47;
 }
 
 /*************** header ***************/
@@ -46,7 +47,6 @@
     padding: 2rem 3rem;
     justify-content: center;
     overflow: auto;
-    background-color: var(--content);
     border-radius: 2rem;
     box-shadow: 0 0 1rem 0 rgba(41, 127, 214, 0.6);
 }
@@ -83,7 +83,7 @@
 
 .sensores{
     margin-top: 20px;
-    display: flex;
+    display: none;
     justify-content: center;
 }
 
@@ -91,4 +91,26 @@
     border-radius: 15px;
     box-shadow: 2px 2px 10px 1px var(--colorLetra);
 }
+.modal{
+    transition: 1s ease-in-out all !important;
+}
+
+.modal header p{
+    display: flex;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.modal section p{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3em;
+}
+
+.modal footer{
+    display: flex;
+    justify-content: center;
+}
+
 

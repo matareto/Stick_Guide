@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos.css">
     <html style='overflow-y:hidden'>
-                            <!--Firestore-->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <title>Stick Guide</title>
 </head>
 <body>
@@ -28,14 +25,14 @@
         <article class="contenido">
             <section class="titulo">
                 <h1>Lectura de sensores</h1>
-                <button class="button is-info">
+                <button class="button is-info" id="start">
                     <i class="far fa-laugh-squint"></i>
                     <span>Iniciar</span>
                 </button>
             </section>
 
-            <section class="sensores">
-                <table class="table">
+            <section class="sensores" id="sensors">
+                <table class="table" id="table">
                     <thead>
                         <tr>
                             <th>Sensor utilizado</th>
@@ -45,11 +42,11 @@
                     <tbody>
                         <tr>
                             <th>Sensor ultrasónico</th>
-                            <td id="sonic">984</td>
+                            <td id="sonic" name="dist"><span id="sonicValue">984</span></td>
                         </tr>
                         <tr>
                             <th>LDR</th>
-                            <td id="light">52</td>
+                            <td id="light"><span id="ldrValue">54</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -57,7 +54,24 @@
 
         </article>
     </main>
+
+    <div class="modal" id="windowMod">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Recuerde</p>
+            </header>
+            <section class="modal-card-body">
+                <p>
+                    Al ser registros alojados en base de datos, los valores pueden tardar en actualizar dependiendo de la velocidad de conexión.
+                </p>
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-danger" id="closeModal">Cerrar</button>
+            </footer>
+        </div>
+    </div>
     
-    <script src="main.js"></script>
+    <script src="main.js" type="module"></script>
 </body>
 </html>
