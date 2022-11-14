@@ -36,6 +36,7 @@ FirebaseConfig config;
 String ruta = "StickGuide";
 
 unsigned long dataMillis = 0;
+unsigned long datMillisD = 0;
 int count = 0;
 
 
@@ -46,11 +47,15 @@ AsyncWebServer server(80);
 
 #define trig 14
 #define echo 27
-#define buzzer 22
+#define buzzer 15
 #define luz 13
+#define online 2
 
 int distancia = 0;
-int estado;
+boolean estado;
+boolean led = true;
+boolean zum = false;
+String oscuridad = " ";
 
 ////////////////////////////////////Funcion del sensor ultrasónico
 
@@ -115,7 +120,8 @@ void setup()
   server.begin();
 
   pinMode(buzzer, OUTPUT);
-  pinMode(luz, INPUT_PULLDOWN);
+  pinMode(luz, INPUT_PULLUP);
+  pinMode(online, OUTPUT);
 }
 
 /////////////////////// Programa principal
@@ -129,12 +135,15 @@ void loop()
     Serial.printf("Set int... %s\n", Firebase.setInt(ultrasonico, "/test/int", count++) ? "ok" : ultrasonico.errorReason().c_str());
   }
 
-  distancia = 0.032/2 * distanciaUltrasonico(trig,echo);
+  if (millis() - datMillisD > 1000)
+  {
+    datMillisD = millis();
+    led = !led;
+    digitalWrite(online, led);
 
-  Serial.print("Distancia: ");
-  Serial.print(distancia );
-  Serial.println(" cm");
-  delay(500);
+  }
+
+    distancia = 0.032 / 2 * distanciaUltrasonico(trig, echo);
 
   if(distancia <= 10)
   {
@@ -147,19 +156,30 @@ void loop()
     digitalWrite(buzzer,LOW);
   }
 
+  
+
   estado = digitalRead(luz);
+  digitalWrite(online, estado);
+  delay(200);
+  if (estado){
+    zum=true;
+  }
+  Serial.println(zum);
+  Serial.println(estado);
 
-
-  if(estado == HIGH )
+  if(estado == false && zum == true)
   {
+    zum = false;
     digitalWrite(buzzer, HIGH);
     delay(300);
     digitalWrite(buzzer, LOW);
+    oscuridad = "ON";
   }
   else{
     digitalWrite(buzzer,LOW);
+    oscuridad = "OFF";
   }
 
   Firebase.setInt(ultrasonico, ruta + "/Distancia ", distancia);
-  Firebase.setInt(ultrasonico, ruta + "/Día-Noche ", estado);
+  Firebase.setString(ultrasonico, ruta + "/Oscuridad ", oscuridad);
 }
