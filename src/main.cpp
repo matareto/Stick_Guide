@@ -55,6 +55,7 @@ int distancia = 0;
 boolean estado;
 boolean led = true;
 boolean zum = false;
+boolean ligth = true;
 String oscuridad = " ";
 
 ////////////////////////////////////Funcion del sensor ultrasónico
@@ -156,16 +157,20 @@ void loop()
     digitalWrite(buzzer,LOW);
   }
 
-  
 
   estado = digitalRead(luz);
-  digitalWrite(online, estado);
-  delay(200);
+  ligth = digitalRead(luz);
+
+  if(ligth == false){
+      oscuridad = "ON";
+  }
+  else{
+    oscuridad = "OFF";
+  }
+
   if (estado){
     zum=true;
   }
-  Serial.println(zum);
-  Serial.println(estado);
 
   if(estado == false && zum == true)
   {
@@ -173,11 +178,9 @@ void loop()
     digitalWrite(buzzer, HIGH);
     delay(300);
     digitalWrite(buzzer, LOW);
-    oscuridad = "ON";
   }
   else{
     digitalWrite(buzzer,LOW);
-    oscuridad = "OFF";
   }
 
   Firebase.setInt(ultrasonico, ruta + "/Distancia ", distancia);
